@@ -2,12 +2,14 @@
   "name": "messages-full-stack",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "9.x"
+  },
   "scripts": {
     "start": "node ./bin/www",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node ./bin/www",
-    "client": "cd client && npm start",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "client": "cd client && npm start"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
