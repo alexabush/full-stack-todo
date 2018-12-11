@@ -7,8 +7,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
+import debounce from 'lodash/debounce';
+
 class App extends PureComponent {
-  state = { todos: [], value: '' };
+  state = { todos: [] };
 
   componentDidMount() {
     this.fetchData();
@@ -22,18 +24,14 @@ class App extends PureComponent {
       });
   };
 
-  handleChange = e => {
-    this.setState({ value: e.target.value });
-  };
-
-  handleSubmit = e => {
+  handleSubmit = (e, value) => {
     e.preventDefault();
     fetch('/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ value: this.state.value })
+      body: JSON.stringify({ value })
     })
       .then(res => res.json())
       .then(data => {
@@ -90,6 +88,7 @@ class App extends PureComponent {
   };
 
   render() {
+    console.log('in App render');
     let todosList = this.state.todos.map(({ id, title }, index) => {
       return (
         <Todo
@@ -102,25 +101,39 @@ class App extends PureComponent {
       );
     });
     return (
-      <div id='container'>
+      <div id="container">
         <div className="App">
           <div>
             <header>Todo list</header>
             <List>{todosList}</List>
           </div>
-          <form onSubmit={this.handleSubmit}>
-            <InputLabel>
-              Todo:
-              <Input
-                type="text"
-                value={this.state.value}
-                onChange={this.handleChange}
-                />
-            </InputLabel>
-            <Button type="submit">Submit</Button>
-          </form>
+          <InputForm handleSubmit={this.handleSubmit} />
         </div>
       </div>
+    );
+  }
+}
+
+class InputForm extends PureComponent {
+  state = { value: '' };
+
+  handleChange = e => {
+    this.setState({ value: e.target.value })
+  }
+
+  render() {
+    return (
+      <form onSubmit={e => this.props.handleSubmit(e, this.state.value)}>
+        <InputLabel>
+          Todo:
+          <Input
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+        </InputLabel>
+        <Button type="submit">Submit</Button>
+      </form>
     );
   }
 }
@@ -151,9 +164,10 @@ class Todo extends PureComponent {
   };
 
   render() {
+    console.log('in Todo render');
     let { title, id } = this.props;
     return this.state.isInputHidden ? (
-      <ListItem style={{justifyContent:"center"}}>
+      <ListItem style={{ justifyContent: 'center' }}>
         <span onClick={this.toggleShowInput}>{title}</span>
         <div
           onClick={() => {
