@@ -8,6 +8,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
 import debounce from 'lodash/debounce';
+import uuid from 'uuid/v4';
 
 class App extends PureComponent {
   state = { todos: [] };
@@ -89,10 +90,10 @@ class App extends PureComponent {
 
   render() {
     console.log('in App render');
-    let todosList = this.state.todos.map(({ id, title }, index) => {
+    let todosList = this.state.todos.map(({ id, title }) => {
       return (
         <Todo
-          key={index}
+          key={uuid()}
           id={id}
           handleUpdate={this.handleUpdate}
           title={title}
@@ -122,8 +123,8 @@ class InputForm extends PureComponent {
   };
 
   handleFormSubmit = e => {
-    this.props.handleSubmit(e, this.state.value)
-  }
+    this.props.handleSubmit(e, this.state.value);
+  };
 
   render() {
     return (
@@ -142,7 +143,7 @@ class InputForm extends PureComponent {
   }
 }
 
-class Todo extends Component {
+class Todo extends PureComponent {
   state = { value: '', isInputHidden: true };
 
   toggleShowInput = () => {
@@ -169,7 +170,7 @@ class Todo extends Component {
 
   handleDeleteClick = () => {
     this.props.handleDelete(this.props.id);
-  }
+  };
 
   render() {
     console.log('in Todo render');
@@ -177,9 +178,7 @@ class Todo extends Component {
     return this.state.isInputHidden ? (
       <ListItem style={{ justifyContent: 'center' }}>
         <span onClick={this.toggleShowInput}>{title}</span>
-        <div
-          onClick={this.handleDeleteClick}
-        >
+        <div onClick={this.handleDeleteClick}>
           <Delete />
         </div>
       </ListItem>
