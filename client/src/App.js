@@ -55,7 +55,7 @@ class App extends PureComponent {
           return acc;
         }, {});
         this.setState(prev => {
-          let newTodos = [...prev.todos].map(todo => {
+          let newTodos = prev.todos.map(todo => {
             if (todosMap[todo.id]) {
               todo = todosMap[todo.id];
             }
@@ -118,8 +118,8 @@ class InputForm extends PureComponent {
   state = { value: '' };
 
   handleChange = e => {
-    this.setState({ value: e.target.value })
-  }
+    this.setState({ value: e.target.value });
+  };
 
   render() {
     return (
