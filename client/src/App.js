@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Delete from '@material-ui/icons/Delete';
@@ -7,8 +7,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
-import debounce from 'lodash/debounce';
 import uuid from 'uuid/v4';
+
+if (process.env.NODE_ENV !== 'production') {
+  const { whyDidYouUpdate } = require('why-did-you-update');
+  whyDidYouUpdate(React);
+}
 
 class App extends PureComponent {
   state = { todos: [] };
@@ -38,7 +42,6 @@ class App extends PureComponent {
       .then(data => {
         this.setState(prev => ({ todos: [...prev.todos, data] }));
       });
-    this.setState({ value: '' });
   };
 
   handleUpdate = (id, value) => {
@@ -90,11 +93,10 @@ class App extends PureComponent {
 
   render() {
     console.log('in App render');
-    let todosList = this.state.todos.map(({ id, title }) => {
+    let todosList = this.state.todos.map(({ title }) => {
       return (
         <Todo
           key={uuid()}
-          id={id}
           handleUpdate={this.handleUpdate}
           title={title}
           handleDelete={this.handleDelete}
@@ -124,6 +126,7 @@ class InputForm extends PureComponent {
 
   handleFormSubmit = e => {
     this.props.handleSubmit(e, this.state.value);
+    this.setState({ value: '' });
   };
 
   render() {
