@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component, PureComponent } from 'react';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Delete from '@material-ui/icons/Delete';
@@ -121,9 +121,13 @@ class InputForm extends PureComponent {
     this.setState({ value: e.target.value });
   };
 
+  handleFormSubmit = e => {
+    this.props.handleSubmit(e, this.state.value)
+  }
+
   render() {
     return (
-      <form onSubmit={e => this.props.handleSubmit(e, this.state.value)}>
+      <form onSubmit={this.handleFormSubmit}>
         <InputLabel>
           Todo:
           <Input
@@ -138,7 +142,7 @@ class InputForm extends PureComponent {
   }
 }
 
-class Todo extends PureComponent {
+class Todo extends Component {
   state = { value: '', isInputHidden: true };
 
   toggleShowInput = () => {
@@ -163,6 +167,10 @@ class Todo extends PureComponent {
     this.toggleShowInput();
   };
 
+  handleDeleteClick = () => {
+    this.props.handleDelete(this.props.id);
+  }
+
   render() {
     console.log('in Todo render');
     let { title, id } = this.props;
@@ -170,9 +178,7 @@ class Todo extends PureComponent {
       <ListItem style={{ justifyContent: 'center' }}>
         <span onClick={this.toggleShowInput}>{title}</span>
         <div
-          onClick={() => {
-            this.props.handleDelete(id);
-          }}
+          onClick={this.handleDeleteClick}
         >
           <Delete />
         </div>
