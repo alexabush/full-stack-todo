@@ -8,12 +8,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
 import uuid from 'uuid/v4';
-
-if (process.env.NODE_ENV !== 'production') {
-  const { whyDidYouUpdate } = require('why-did-you-update');
-  whyDidYouUpdate(React);
-}
-
 class App extends PureComponent {
   state = { todos: [] };
 
@@ -45,6 +39,7 @@ class App extends PureComponent {
   };
 
   handleUpdate = (id, value) => {
+    debugger
     fetch('/messages', {
       method: 'PUT',
       headers: {
@@ -93,9 +88,12 @@ class App extends PureComponent {
 
   render() {
     console.log('in App render');
-    let todosList = this.state.todos.map(({ title }) => {
+    console.log('this.state', this.state)
+    debugger
+    let todosList = this.state.todos.map(({ id, title }) => {
       return (
         <Todo
+          id={id}
           key={uuid()}
           handleUpdate={this.handleUpdate}
           title={title}
