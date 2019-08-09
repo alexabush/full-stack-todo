@@ -1,6 +1,17 @@
 {
   "development": {
-    "use_env_variable": "DATABASE_URL"
+    "username": "",
+    "password": "",
+    "database": "todo_development",
+    "host": "127.0.0.1",
+    "dialect": "postgresql"
+  },
+  "test": {
+    "username": "",
+    "password": "",
+    "database": "todo_test",
+    "host": "127.0.0.1",
+    "dialect": "postgresql"
   },
   "production": {
     "use_env_variable": "DATABASE_URL"

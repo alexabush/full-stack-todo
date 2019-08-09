@@ -6,7 +6,6 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-
 import uuid from 'uuid/v4';
 class App extends PureComponent {
   state = { todos: [] };
@@ -20,6 +19,9 @@ class App extends PureComponent {
       .then(res => res.json())
       .then(data => {
         this.setState({ todos: data });
+      })
+      .catch(e => {
+        console.error('unable to fetch messages');
       });
   };
 
@@ -39,7 +41,7 @@ class App extends PureComponent {
   };
 
   handleUpdate = (id, value) => {
-    debugger
+    console.log('IN HANDLE UPDATE', id, value);
     fetch('/messages', {
       method: 'PUT',
       headers: {
@@ -87,9 +89,6 @@ class App extends PureComponent {
   };
 
   render() {
-    console.log('in App render');
-    console.log('this.state', this.state)
-    debugger
     let todosList = this.state.todos.map(({ id, title }) => {
       return (
         <Todo
@@ -164,6 +163,7 @@ class Todo extends PureComponent {
   };
 
   handleSubmit = e => {
+    console.log('IN HANDLE SUBMIT');
     e.preventDefault();
     this.props.handleUpdate(this.props.id, this.state.value);
     this.toggleShowInput();
@@ -174,13 +174,14 @@ class Todo extends PureComponent {
   };
 
   render() {
-    console.log('in Todo render');
-    let { title, id } = this.props;
+    let { title } = this.props;
     return this.state.isInputHidden ? (
       <ListItem style={{ justifyContent: 'center' }}>
         <span onClick={this.toggleShowInput}>{title}</span>
         <div onClick={this.handleDeleteClick}>
-          <Delete />
+          <span className="delete-icon">
+            <Delete />
+          </span>
         </div>
       </ListItem>
     ) : (

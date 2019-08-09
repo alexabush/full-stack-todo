@@ -14,7 +14,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "npx cypress open",
+    "cypress-test": "npx cypress run"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {
@@ -27,6 +29,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "cypress": "^3.4.1",
     "why-did-you-update": "^1.0.6"
   }
 }
